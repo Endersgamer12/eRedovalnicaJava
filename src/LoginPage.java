@@ -2,6 +2,7 @@ import javax.swing.AbstractAction;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
@@ -22,17 +23,17 @@ public class LoginPage implements ActionListener {
     JPanel panel;
     JFrame frame;
 
-    JLabel usernamelabel;
+    JLabel emaillabel;
     JLabel passwordlabel;
 
-    private static JTextField userText;
-    private static JPasswordField passwordText;
+    private static JTextField emailText;
+    private static JTextField passwordText;
 
     JButton loginButton;
-    JButton registerButton;
 
     public LoginPage() {
 
+        // settanje up frama pa pannela
         panel = new JPanel();
         frame = new JFrame();
         frame.setSize(350, 240);
@@ -43,13 +44,14 @@ public class LoginPage implements ActionListener {
 
         panel.setLayout(null);
 
-        usernamelabel = new JLabel("User");
-        usernamelabel.setBounds(10, 20, 80, 25);
-        panel.add(usernamelabel);
+        // vsi objekti na framu
+        emaillabel = new JLabel("User");
+        emaillabel.setBounds(10, 20, 80, 25);
+        panel.add(emaillabel);
 
-        userText = new JTextField();
-        userText.setBounds(100, 20, 165, 25);
-        panel.add(userText);
+        emailText = new JTextField();
+        emailText.setBounds(100, 20, 165, 25);
+        panel.add(emailText);
 
         passwordlabel = new JLabel("Password");
         passwordlabel.setBounds(10, 60, 80, 25);
@@ -65,13 +67,6 @@ public class LoginPage implements ActionListener {
         loginButton.setBackground(new Color(77, 152, 218));
         panel.add(loginButton);
 
-        registerButton = new JButton("Need Account?");
-        registerButton.addActionListener(this);
-        registerButton.setBounds(110, 150, 100, 20);
-        registerButton.setFont(new Font("Arial", Font.PLAIN, 8));
-        registerButton.setBackground(new Color(77, 152, 218));
-        panel.add(registerButton);
-
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
@@ -81,40 +76,53 @@ public class LoginPage implements ActionListener {
         new LoginPage();
     }
 
+    // preveri login, dobi ali je ucitelj ali stars
     public int gettrust() {
+        Connection c = null;
+
         try {
             Class.forName("org.postgresql.Driver");
-            Connection c = DriverManager
+            c = DriverManager
                     .getConnection(
-                            "jdbc:postgresql://ep-wild-darkness-767526.eu-central-1.aws.neon.tech/neondb?user=nik.krnjovsek&password=a1hjwRmFZeE0",
-                            "nik.krnjovsek", "a1hjwRmFZeE0");
+                            "jdbc:postgresql://trumpet.db.elephantsql.com:5432/vnkkwcle",
+                            "vnkkwcle", "Ha3l6m0s1K4y8Uax3R_AmfynSejagg8H");
             Statement select = c.createStatement();
-            String sql = "SELECT login('" + userText.getText() + "', '" + passwordText.getText() + "')";
+            String sql = "SELECT login('" + emailText.getText() + "', '" + passwordText.getText() + "')";
             ResultSet rs = select.executeQuery(sql);
+            System.out.println(emailText.getText() + "', '" + passwordText.getText());
             if (rs.next()) {
-                if (rs.getBoolean(1)) {
-                    return 1;
-                } else {
-                    return 0;
-                }
+                return rs.getInt(1);
             }
         } catch (Exception e1) {
             e1.printStackTrace();
+        } finally {
+            try {
+                c.close();
+            } catch (Exception e) {
+                /* Ignored */ }
         }
+
         return 0;
     }
 
+    // event caller, dobi event ki ga izvede button in naredi nekaj
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == loginButton) {
+            String mail = emailText.getText();
             int babadoey = gettrust();
-            if (babadoey == 1) {
+            System.out.println(babadoey);
+            if (babadoey == 0) {
+                JOptionPane.showMessageDialog(null, "email ter koda se ne ujemata", "InfoBox: " + "napaka",
+                        JOptionPane.INFORMATION_MESSAGE);
+            } else if (babadoey == 1) {
                 Dashboard dashboard = new Dashboard();
                 frame.dispose();
+            } else if (babadoey == 2) {
+                starsPregled sPregled = new starsPregled();
+                sPregled.mail = mail;
+                frame.dispose();
             }
-        }
-        if (e.getSource() == registerButton) {
-
         }
     }
 }
