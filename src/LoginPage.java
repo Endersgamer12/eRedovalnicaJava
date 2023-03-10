@@ -6,10 +6,14 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.GridBagConstraints;
 
 import java.awt.event.ActionListener;
 import java.io.Console;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 
@@ -31,6 +35,8 @@ public class LoginPage implements ActionListener {
 
     JButton loginButton;
 
+    GridBagConstraints gbc = new GridBagConstraints();
+
     public LoginPage() {
 
         // settanje up frama pa pannela
@@ -40,32 +46,54 @@ public class LoginPage implements ActionListener {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setTitle("Prijava");
         panel.setBackground(new Color(76, 218, 240));
+        panel.setLayout(new GridBagLayout());
         frame.add(panel);
-
-        panel.setLayout(null);
 
         // vsi objekti na framu
         emaillabel = new JLabel("User");
-        emaillabel.setBounds(10, 20, 80, 25);
-        panel.add(emaillabel);
+        emaillabel.setPreferredSize(new Dimension(50, 20));
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.gridwidth = 1;
+        gbc.insets = new Insets(0, 0, 10, 15);
+
+        panel.add(emaillabel, gbc);
 
         emailText = new JTextField();
-        emailText.setBounds(100, 20, 165, 25);
-        panel.add(emailText);
+        emailText.setPreferredSize(new Dimension(100, 20));
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        gbc.gridwidth = 1;
+
+        panel.add(emailText, gbc);
 
         passwordlabel = new JLabel("Password");
-        passwordlabel.setBounds(10, 60, 80, 25);
-        panel.add(passwordlabel);
+        passwordlabel.setPreferredSize(new Dimension(50, 20));
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.gridwidth = 1;
+        gbc.insets = new Insets(0, 0, 10, 15);
+
+        panel.add(passwordlabel, gbc);
 
         passwordText = new JPasswordField();
-        passwordText.setBounds(100, 60, 165, 25);
-        panel.add(passwordText);
+        passwordText.setPreferredSize(new Dimension(100, 20));
+        gbc.gridx = 1;
+        gbc.gridy = 1;
+        gbc.gridwidth = 1;
+
+        panel.add(passwordText, gbc);
 
         loginButton = new JButton("Login");
         loginButton.addActionListener(this);
         loginButton.setBounds(100, 100, 120, 25);
         loginButton.setBackground(new Color(77, 152, 218));
-        panel.add(loginButton);
+
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        gbc.gridwidth = 2;
+
+        panel.add(loginButton, gbc);
 
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
