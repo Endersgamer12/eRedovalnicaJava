@@ -116,7 +116,8 @@ public class LoginPage implements ActionListener {
                 JOptionPane.showMessageDialog(null, "email ter koda se ne ujemata", "InfoBox: " + "napaka",
                         JOptionPane.INFORMATION_MESSAGE);
             } else if (babadoey == 1) {
-                Dashboard dashboard = new Dashboard();
+                uciteljPregled uPregled = new uciteljPregled();
+                uPregled.mail = mail;
                 frame.dispose();
             } else if (babadoey == 2) {
                 starsPregled sPregled = new starsPregled();
