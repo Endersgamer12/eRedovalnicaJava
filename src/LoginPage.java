@@ -111,17 +111,16 @@ public class LoginPage implements ActionListener {
         if (e.getSource() == loginButton) {
             String mail = emailText.getText();
             int babadoey = gettrust();
-            System.out.println(babadoey);
+
             if (babadoey == 0) {
                 JOptionPane.showMessageDialog(null, "email ter koda se ne ujemata", "InfoBox: " + "napaka",
                         JOptionPane.INFORMATION_MESSAGE);
-            } else if (babadoey == 1) {
-                uciteljPregled uPregled = new uciteljPregled();
-                uPregled.mail = mail;
-                frame.dispose();
             } else if (babadoey == 2) {
-                starsPregled sPregled = new starsPregled();
-                sPregled.mail = mail;
+                starsPregled sPregled = new starsPregled(mail);
+                frame.dispose();
+
+            } else if (babadoey == 1) {
+                uciteljPregled uPregled = new uciteljPregled(mail);
                 frame.dispose();
             }
         }

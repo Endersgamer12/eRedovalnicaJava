@@ -40,19 +40,12 @@ public class starsPregled implements ActionListener {
 
     String[][] dataArray = new String[1000][1000];
 
-    JButton editButton;
-    JButton newButton;
-    JButton deleteButton;
-    JButton izvozButton;
-
     JTable booksTable;
     JScrollPane scrollPane;
 
     GridBagConstraints gbc = new GridBagConstraints();
 
-    String mail = "joze.kuznik@gmail.com";
-
-    public starsPregled() {
+    public starsPregled(String gmail) {
 
         panel = new JPanel();
         panel.setLayout(new GridBagLayout());
@@ -61,38 +54,9 @@ public class starsPregled implements ActionListener {
         frame.setSize(1000, 600);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         panel.setBackground(new Color(76, 218, 240));
-        frame.setTitle("Dashboard");
+        frame.setTitle("Stars");
 
-        newButton = new JButton("Dodaj knjigo");
-        newButton.addActionListener(this);
-        newButton.setBackground(new Color(77, 152, 218));
-        gbc.gridx = 0;
-        gbc.gridy = 1;
-        gbc.insets = new Insets(5, 38, 5, 38);
-        panel.add(newButton, gbc);
-
-        editButton = new JButton("Spremeni oznaceno knjigo");
-        editButton.addActionListener(this);
-        editButton.setBackground(new Color(77, 152, 218));
-        gbc.gridx = 1;
-        gbc.gridy = 1;
-        panel.add(editButton, gbc);
-
-        deleteButton = new JButton("Izbrisi oznaceno knjigo");
-        deleteButton.addActionListener(this);
-        deleteButton.setBackground(new Color(77, 152, 218));
-        gbc.gridx = 2;
-        gbc.gridy = 1;
-        panel.add(deleteButton, gbc);
-
-        izvozButton = new JButton("Izvoz podatkov");
-        izvozButton.addActionListener(this);
-        izvozButton.setBackground(new Color(77, 152, 218));
-        gbc.gridx = 3;
-        gbc.gridy = 1;
-        panel.add(izvozButton, gbc);
-
-        getGradesData();
+        getGradesData(gmail);
         String vrste[] = { "ID", "Stevilka", "Opis", "Ucenec", "Predmet", "Ucitelj" };
         booksTable = new JTable(dataArray, vrste);
         booksTable.getTableHeader().setOpaque(false);
@@ -124,10 +88,10 @@ public class starsPregled implements ActionListener {
 
     public static void main(String[] args) throws Exception {
 
-        new starsPregled();
+        new starsPregled("joze.kuznik@gmail.com");
     }
 
-    public void getGradesData() {
+    public void getGradesData(String gmail) {
 
         Connection c = null;
 
@@ -138,7 +102,8 @@ public class starsPregled implements ActionListener {
                             "jdbc:postgresql://trumpet.db.elephantsql.com:5432/vnkkwcle",
                             "vnkkwcle", "Ha3l6m0s1K4y8Uax3R_AmfynSejagg8H");
             Statement select = c.createStatement();
-            String sql = "SELECT starsPregledOcene('" + mail + "')";
+
+            String sql = "SELECT starsPregledOcene('" + gmail + "')";
             ResultSet rs = select.executeQuery(sql);
             Integer counter = 0;
             while (rs.next()) {
@@ -197,29 +162,6 @@ public class starsPregled implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == newButton) {
-
-        } else if (e.getSource() == editButton) {
-
-        } else if (e.getSource() == deleteButton) {
-            deleteBook();
-        } else if (e.getSource() == izvozButton) {
-            try (Connection c = DriverManager
-                    .getConnection(
-                            "jdbc:postgres://@trumpet.db.elephantsql.com/vnkkwcle",
-                            "vnkkwcle", "Ha3l6m0s1K4y8Uax3R_AmfynSejagg8H")) {
-                CopyManager copyManager = new CopyManager((BaseConnection) c);
-                File file = new File("C:/Users/nikkr/Desktop/temporar/podatki.csv");
-                FileOutputStream fileOutputStream = new FileOutputStream(file);
-                // and finally execute the COPY command to the file with this method:
-                copyManager.copyOut("COPY ("
-                        + "SELECT  DISTINCT k.id, k.ime, p.ime, p.priimek, k.stevilo_strani, z.ime, k.datum_objave FROM knjige k INNER JOIN pisatelji p on k.pisatelji_id = p.id INNER JOIN zanri_knjige zk ON k.id = zk.knjiga_id INNER JOIN zanri z ON zk.zanr_id = z.id"
-                        + ") TO STDOUT WITH (FORMAT CSV, HEADER)", fileOutputStream);
-            } catch (SQLException | IOException e1) {
-                // TODO Auto-generated catch block
-                e1.printStackTrace();
-            }
-        }
 
     }
 }
