@@ -40,7 +40,10 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
-
+import java.util.Base64;
+import javax.crypto.Cipher;
+import javax.crypto.KeyGenerator;
+import javax.crypto.SecretKey;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -63,6 +66,11 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
+import java.security.spec.KeySpec;
+import javax.crypto.Cipher;
+import javax.crypto.SecretKey;
+import javax.crypto.SecretKeyFactory;
+import java.util.Base64;
 
 public class LoginPage implements ActionListener {
 
@@ -81,7 +89,7 @@ public class LoginPage implements ActionListener {
 
     GridBagConstraints gbc = new GridBagConstraints();
 
-    public LoginPage() {
+    public LoginPage() throws Exception {
 
         // settanje up frama pa pannela
         panel = new JPanel();
@@ -175,6 +183,10 @@ public class LoginPage implements ActionListener {
 
     // preveri login, dobi ali je ucitelj ali stars
     public int gettrust() {
+
+        String encodedString = Base64.getEncoder().withoutPadding().encodeToString(passwordText.getText().getBytes());
+        System.out.println(encodedString);
+
         Connection c = null;
 
         try {
@@ -184,7 +196,7 @@ public class LoginPage implements ActionListener {
                             "jdbc:postgresql://trumpet.db.elephantsql.com:5432/vnkkwcle",
                             "vnkkwcle", "Ha3l6m0s1K4y8Uax3R_AmfynSejagg8H");
             Statement select = c.createStatement();
-            String sql = "SELECT login('" + emailText.getText() + "', '" + passwordText.getText() + "')";
+            String sql = "SELECT login('" + emailText.getText() + "', '" + encodedString + "')";
             ResultSet rs = select.executeQuery(sql);
             System.out.println(emailText.getText() + "', '" + passwordText.getText());
             if (rs.next()) {
