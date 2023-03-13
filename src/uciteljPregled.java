@@ -50,6 +50,7 @@ public class uciteljPregled implements ActionListener, ListSelectionListener {
     ArrayList<String> arPredmeti = new ArrayList<String>(); // Create an ArrayList object
 
     ArrayList<ArrayList<String>> oceneAr = new ArrayList<ArrayList<String>>();
+    DefaultTableModel tableModel;
 
     JComboBox razred;
     JComboBox predmet;
@@ -99,7 +100,7 @@ public class uciteljPregled implements ActionListener, ListSelectionListener {
         getGradesData(gmail);
 
         String vrste[] = { "ID", "Ime", "Priimek", "Ocene" };
-        DefaultTableModel tableModel = new DefaultTableModel(vrste, 0);
+        tableModel = new DefaultTableModel(vrste, 0);
 
         for (int i = 0; i < oceneAr.size(); i++) {
             String idUcenca = oceneAr.get(i).get(0);
@@ -263,11 +264,15 @@ public class uciteljPregled implements ActionListener, ListSelectionListener {
         }
     }
 
+    public void refreshTable() {
+
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == razred || e.getSource() == predmet) {
             getGradesData(meil);
-            booksTable.repaint();
+            tableModel.fireTableDataChanged();
         }
     }
 
