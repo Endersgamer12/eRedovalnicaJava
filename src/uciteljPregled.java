@@ -8,6 +8,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import java.awt.event.ActionListener;
 import java.io.Console;
@@ -30,20 +32,26 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.function.ToIntFunction;
 import java.applet.Applet;
 import org.postgresql.core.BaseConnection;
 import org.postgresql.copy.CopyManager;
+import java.util.ArrayList; // import the ArrayList class
 
-public class uciteljPregled implements ActionListener {
+public class uciteljPregled implements ActionListener, ListSelectionListener {
 
     JPanel panel;
     JFrame frame;
 
     String meil;
 
+    ArrayList<String> arRazredi = new ArrayList<String>(); // Create an ArrayList object
+    ArrayList<String> arPredmeti = new ArrayList<String>(); // Create an ArrayList object
+
     String[][] dataArray = new String[1000][1000];
 
     JComboBox razred;
+    JComboBox predmet;
 
     JTable booksTable;
     JScrollPane scrollPane;
@@ -63,8 +71,10 @@ public class uciteljPregled implements ActionListener {
         panel.setBackground(new Color(76, 218, 240));
         frame.setTitle("Ucitelj");
 
-        String[] arRazredi = { "4tra", "4trb" };
-        razred = new JComboBox(arRazredi);
+        dobiRazrede(gmail);
+        String[] razrediTempAr = new String[arRazredi.size()];
+        razrediTempAr = arRazredi.toArray(razrediTempAr);
+        razred = new JComboBox(razrediTempAr);
         razred.setSelectedIndex(0);
         razred.addActionListener(this);
         gbc.gridx = 0;
@@ -72,6 +82,18 @@ public class uciteljPregled implements ActionListener {
         gbc.gridwidth = 1;
         gbc.insets = new Insets(0, 0, 10, 15);
         panel.add(razred, gbc);
+
+        dobiPredmete(gmail);
+        String[] predmetiTempAr = new String[arPredmeti.size()];
+        predmetiTempAr = arPredmeti.toArray(predmetiTempAr);
+        predmet = new JComboBox(predmetiTempAr);
+        predmet.setSelectedIndex(0);
+        predmet.addActionListener(this);
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        gbc.gridwidth = 1;
+        gbc.insets = new Insets(0, 0, 10, 15);
+        panel.add(predmet, gbc);
 
         getGradesData(gmail);
         String vrste[] = { "ID", "Ime", "Priimek", "Ocene" };
@@ -85,6 +107,7 @@ public class uciteljPregled implements ActionListener {
         booksTable.setFont(new Font("Arial", Font.PLAIN, 14));
         booksTable.setBackground(new Color(77, 218, 180));
         booksTable.setBorder(BorderFactory.createEmptyBorder());
+        booksTable.getSelectionModel().addListSelectionListener(this);
 
         gbc.gridx = 0;
         gbc.gridy = 1;
@@ -120,7 +143,8 @@ public class uciteljPregled implements ActionListener {
                             "vnkkwcle", "Ha3l6m0s1K4y8Uax3R_AmfynSejagg8H");
             Statement select = c.createStatement();
 
-            String sql = "SELECT uciteljPregledOcene('" + gmail + "', '" + razred.getSelectedItem().toString() + "')";
+            String sql = "SELECT uciteljPregledOcene('" + gmail + "', '" + razred.getSelectedItem().toString() + "', '"
+                    + predmet.getSelectedItem().toString() + "')";
             ResultSet rs = select.executeQuery(sql);
             Integer counter = 0;
             while (rs.next()) {
@@ -128,6 +152,7 @@ public class uciteljPregled implements ActionListener {
                 item = item.replace("(", "");
                 item = item.replace(")", "");
                 item = item.replace("\"", "");
+                String ocene = item.substring(item.indexOf("{") + 1, item.indexOf("}"));
                 item = item.replace("{", "");
                 item = item.replace("}", "");
 
@@ -135,7 +160,6 @@ public class uciteljPregled implements ActionListener {
                 String idUcenca = chop[0];
                 String imeUcenca = chop[1];
                 String priimekUcenca = chop[2];
-                String ocene = chop[3];
                 dataArray[counter][0] = idUcenca;
                 dataArray[counter][1] = imeUcenca;
                 dataArray[counter][2] = priimekUcenca;
@@ -153,31 +177,91 @@ public class uciteljPregled implements ActionListener {
         }
     }
 
-    public void deleteBook() {
+    public void dobiRazrede(String gmail) {
+
+        Connection c = null;
+
         try {
             Class.forName("org.postgresql.Driver");
-            Connection c = DriverManager
+            c = DriverManager
                     .getConnection(
                             "jdbc:postgresql://trumpet.db.elephantsql.com:5432/vnkkwcle",
                             "vnkkwcle", "Ha3l6m0s1K4y8Uax3R_AmfynSejagg8H");
             Statement select = c.createStatement();
-            String sql = "SELECT ime FROM ucenci LIMIT 1";
+
+            String sql = "SELECT uciteljRazredi('" + gmail + "')";
             ResultSet rs = select.executeQuery(sql);
-            if (rs.next()) {
-                System.out.println(rs.getString(1));
+            while (rs.next()) {
+                String item = rs.getString(1);
+                item = item.replace("(", "");
+                item = item.replace(")", "");
+                item = item.replace("\"", "");
+                item = item.replace("{", "");
+                item = item.replace("}", "");
+
+                arRazredi.add(item);
             }
 
         } catch (Exception e1) {
             e1.printStackTrace();
+        } finally {
+            try {
+                c.close();
+            } catch (Exception e) {
+                /* Ignored */ }
+        }
+    }
+
+    public void dobiPredmete(String gmail) {
+
+        Connection c = null;
+
+        try {
+            Class.forName("org.postgresql.Driver");
+            c = DriverManager
+                    .getConnection(
+                            "jdbc:postgresql://trumpet.db.elephantsql.com:5432/vnkkwcle",
+                            "vnkkwcle", "Ha3l6m0s1K4y8Uax3R_AmfynSejagg8H");
+            Statement select = c.createStatement();
+
+            String sql = "SELECT uciteljPredmeti('" + gmail + "')";
+            ResultSet rs = select.executeQuery(sql);
+            while (rs.next()) {
+                String item = rs.getString(1);
+                item = item.replace("(", "");
+                item = item.replace(")", "");
+                item = item.replace("\"", "");
+                item = item.replace("{", "");
+                item = item.replace("}", "");
+
+                arPredmeti.add(item);
+            }
+
+        } catch (Exception e1) {
+            e1.printStackTrace();
+        } finally {
+            try {
+                c.close();
+            } catch (Exception e) {
+                /* Ignored */ }
         }
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == razred) {
+        if (e.getSource() == razred || e.getSource() == predmet) {
             getGradesData(meil);
             booksTable.repaint();
         }
-
     }
+
+    @Override
+    public void valueChanged(ListSelectionEvent e) {
+        int row = booksTable.getSelectedRow();
+        Integer id = Integer.parseInt(booksTable.getModel().getValueAt(row, 0).toString());
+
+        uciteljSpremeniOcene uSpremeniOcene = new uciteljSpremeniOcene(meil, id, predmet.getSelectedItem().toString());
+        frame.dispose();
+    }
+
 }
