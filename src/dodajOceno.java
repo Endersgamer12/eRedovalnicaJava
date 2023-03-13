@@ -196,6 +196,8 @@ public class dodajOceno implements ActionListener {
 
             usc.getGradesData();
             usc.refreshTable();
+            usc.counter = 3;
+
             frame.dispose();
         }
     }
