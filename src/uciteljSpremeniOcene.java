@@ -52,6 +52,9 @@ public class uciteljSpremeniOcene implements ActionListener, ListSelectionListen
 
     String[][] dataArray = new String[1000][1000];
 
+    JButton backButton;
+    JButton newgradeButton;
+
     JTable booksTable;
     JScrollPane scrollPane;
 
@@ -71,6 +74,32 @@ public class uciteljSpremeniOcene implements ActionListener, ListSelectionListen
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         panel.setBackground(new Color(76, 218, 240));
         frame.setTitle("Ucitelj");
+
+        backButton = new RoundedJButton("Nazaj");
+        backButton.setPreferredSize(new Dimension(70, 30));
+        backButton.addActionListener(this);
+        backButton.setBorder(null);
+        backButton.setBackground(new Color(41, 53, 66));
+        backButton.setForeground(new Color(255, 255, 255));
+
+        gbc.gridx = 4;
+        gbc.gridy = 2;
+        gbc.gridwidth = 1;
+
+        panel.add(backButton, gbc);
+
+        newgradeButton = new RoundedJButton("Nova ocena");
+        newgradeButton.setPreferredSize(new Dimension(70, 30));
+        newgradeButton.addActionListener(this);
+        newgradeButton.setBorder(null);
+        newgradeButton.setBackground(new Color(41, 53, 66));
+        newgradeButton.setForeground(new Color(255, 255, 255));
+
+        gbc.gridx = 3;
+        gbc.gridy = 2;
+        gbc.gridwidth = 1;
+
+        panel.add(newgradeButton, gbc);
 
         getGradesData();
         String vrste[] = { "ID", "Ocena", "Opis" };
@@ -157,7 +186,12 @@ public class uciteljSpremeniOcene implements ActionListener, ListSelectionListen
 
     @Override
     public void actionPerformed(ActionEvent e) {
-
+        if (e.getSource() == backButton) {
+            uciteljPregled uPregled = new uciteljPregled(meil);
+            frame.dispose();
+        } else if (e.getSource() == newgradeButton) {
+            dodajOceno dOceno = new dodajOceno(ide, prdmt, meil, this);
+        }
     }
 
     @Override

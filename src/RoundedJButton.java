@@ -23,7 +23,8 @@ public class RoundedJButton extends JButton {
             int y = 0;
             int w = b.getWidth();
             int h = b.getHeight();
-            int arc = h; // set the arc height to be the same as the button height for fully rounded corners
+            int arc = h / 2; // set the arc height to be the same as the button height for fully rounded
+                             // corners
             if (model.isPressed()) {
                 // if the button is pressed, move the drawing coordinates down and to the right
                 x = 1;
@@ -34,7 +35,8 @@ public class RoundedJButton extends JButton {
             g2.setColor(b.getBackground());
             g2.fillRoundRect(x, y, w - 1, h - 1, arc, arc); // decrease the width and height by 1 to remove the gaps
             g2.setColor(b.getForeground());
-            g2.drawRoundRect(x, y, w - 1, h - 1, arc, arc); // decrease the width and height by 1 to remove the gaps
+            g2.drawRoundRect(x + 1, y + 1, w - 3, h - 3, arc, arc); // decrease the width and height by 1 to remove the
+                                                                    // gaps
             g2.dispose();
             super.paint(g, c);
         }

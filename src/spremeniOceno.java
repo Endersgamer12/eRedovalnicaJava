@@ -147,7 +147,7 @@ public class spremeniOceno implements ActionListener {
 
         panel.add(opisText, gbc);
 
-        spremeniButton = new RoundedJButton("Login");
+        spremeniButton = new RoundedJButton("Spremeni");
         spremeniButton.setPreferredSize(new Dimension(70, 30));
         spremeniButton.addActionListener(this);
         spremeniButton.setBorder(null);
