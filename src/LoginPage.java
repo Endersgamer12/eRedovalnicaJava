@@ -72,6 +72,7 @@ public class LoginPage implements ActionListener {
 
     JLabel emaillabel;
     JLabel passwordlabel;
+    JLabel logoLabel;
 
     private static JTextField emailText;
     private static JTextField passwordText;
@@ -88,8 +89,10 @@ public class LoginPage implements ActionListener {
         frame.setSize(400, 250);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setTitle("Prijava");
+        frame.getContentPane().setBackground(new Color(33, 42, 53));
         panel.setBackground(new Color(33, 42, 53));
         panel.setLayout(new GridBagLayout());
+        frame.setLayout(new GridBagLayout());
         frame.add(panel);
 
         // vsi objekti na framu
@@ -137,6 +140,15 @@ public class LoginPage implements ActionListener {
 
         panel.add(panel2, gbc);
 
+        logoLabel = new JLabel("eRed");
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.gridwidth = 1;
+        logoLabel.setFont(new Font("Arial", Font.BOLD, 15));
+        logoLabel.setForeground(new Color(255, 255, 255));
+        panel.add(logoLabel, gbc);
+
         loginButton = new RoundedJButton("Prijava");
         loginButton.setPreferredSize(new Dimension(100, 30));
         loginButton.addActionListener(this);
@@ -147,6 +159,7 @@ public class LoginPage implements ActionListener {
         gbc.gridx = 0;
         gbc.gridy = 2;
         gbc.gridwidth = 2;
+        gbc.anchor = GridBagConstraints.CENTER;
         gbc.insets = new Insets(15, 5, 5, 5);
 
         panel.add(loginButton, gbc);

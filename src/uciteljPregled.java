@@ -10,6 +10,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableModel;
 
 import java.awt.event.ActionListener;
 import java.io.Console;
@@ -48,7 +49,7 @@ public class uciteljPregled implements ActionListener, ListSelectionListener {
     ArrayList<String> arRazredi = new ArrayList<String>(); // Create an ArrayList object
     ArrayList<String> arPredmeti = new ArrayList<String>(); // Create an ArrayList object
 
-    String[][] dataArray = new String[1000][1000];
+    ArrayList<ArrayList<String>> oceneAr = new ArrayList<ArrayList<String>>();
 
     JComboBox razred;
     JComboBox predmet;
@@ -96,8 +97,22 @@ public class uciteljPregled implements ActionListener, ListSelectionListener {
         panel.add(predmet, gbc);
 
         getGradesData(gmail);
+
         String vrste[] = { "ID", "Ime", "Priimek", "Ocene" };
-        booksTable = new JTable(dataArray, vrste);
+        DefaultTableModel tableModel = new DefaultTableModel(vrste, 0);
+
+        for (int i = 0; i < oceneAr.size(); i++) {
+            String idUcenca = oceneAr.get(i).get(0);
+            String imeUcenca = oceneAr.get(i).get(1);
+            String priimekUcenca = oceneAr.get(i).get(2);
+            String oceneUcenca = oceneAr.get(i).get(3);
+
+            String[] data = { idUcenca, imeUcenca, priimekUcenca, oceneUcenca };
+
+            tableModel.addRow(data);
+        }
+
+        booksTable = new JTable(tableModel);
         booksTable.getTableHeader().setOpaque(false);
         booksTable.getTableHeader().setFont(new Font("Arial", Font.BOLD, 18));
         booksTable.getTableHeader().setForeground(new Color(255, 255, 255));
@@ -160,13 +175,11 @@ public class uciteljPregled implements ActionListener, ListSelectionListener {
                 item = item.replace("}", "");
 
                 String[] chop = item.split(",");
-                String idUcenca = chop[0];
-                String imeUcenca = chop[1];
-                String priimekUcenca = chop[2];
-                dataArray[counter][0] = idUcenca;
-                dataArray[counter][1] = imeUcenca;
-                dataArray[counter][2] = priimekUcenca;
-                dataArray[counter][3] = ocene;
+                oceneAr.add(new ArrayList<String>());
+                oceneAr.get(counter).add(0, chop[0]);
+                oceneAr.get(counter).add(1, chop[1]);
+                oceneAr.get(counter).add(2, chop[2]);
+                oceneAr.get(counter).add(3, ocene);
                 counter++;
             }
 

@@ -84,6 +84,7 @@ public class spremeniOceno implements ActionListener {
     private static JTextField opisText;
 
     RoundedJButton spremeniButton;
+    RoundedJButton izbrisiButton;
 
     GridBagConstraints gbc = new GridBagConstraints();
 
@@ -161,6 +162,20 @@ public class spremeniOceno implements ActionListener {
 
         panel.add(spremeniButton, gbc);
 
+        izbrisiButton = new RoundedJButton("Izbrisi");
+        izbrisiButton.setPreferredSize(new Dimension(70, 30));
+        izbrisiButton.addActionListener(this);
+        izbrisiButton.setBorder(null);
+        izbrisiButton.setBackground(new Color(240, 0, 0));
+        izbrisiButton.setForeground(new Color(255, 255, 255));
+
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        gbc.gridwidth = 2;
+        gbc.insets = new Insets(0, 0, 20, 15);
+
+        panel.add(izbrisiButton, gbc);
+
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
@@ -190,6 +205,29 @@ public class spremeniOceno implements ActionListener {
 
     }
 
+    public void Izbrisi() {
+        Connection c = null;
+
+        try {
+            Class.forName("org.postgresql.Driver");
+            c = DriverManager
+                    .getConnection(
+                            "jdbc:postgresql://trumpet.db.elephantsql.com:5432/vnkkwcle",
+                            "vnkkwcle", "Ha3l6m0s1K4y8Uax3R_AmfynSejagg8H");
+            Statement select = c.createStatement();
+            String sql = "SELECT izbrisiOceno(" + id + ")";
+            ResultSet rs = select.executeQuery(sql);
+        } catch (Exception e1) {
+            e1.printStackTrace();
+        } finally {
+            try {
+                c.close();
+            } catch (Exception e) {
+                /* Ignored */ }
+        }
+
+    }
+
     // event caller, dobi event ki ga izvede button in naredi nekaj
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -198,6 +236,12 @@ public class spremeniOceno implements ActionListener {
             System.out.println(id);
             System.out.println(ocena);
             System.out.println(opis);
+            usc.getGradesData();
+            usc.Refresh();
+            frame.dispose();
+        }
+        if (e.getSource() == izbrisiButton) {
+            Izbrisi();
             usc.getGradesData();
             usc.Refresh();
             frame.dispose();

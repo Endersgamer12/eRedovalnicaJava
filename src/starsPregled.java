@@ -7,6 +7,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
 
 import java.awt.event.ActionListener;
 import java.io.Console;
@@ -27,6 +28,7 @@ import java.sql.ResultSet;
 import java.sql.*;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
 import java.applet.Applet;
@@ -37,6 +39,8 @@ public class starsPregled implements ActionListener {
 
     JPanel panel;
     JFrame frame;
+
+    ArrayList<ArrayList<String>> oceneAr = new ArrayList<ArrayList<String>>();
 
     String[][] dataArray = new String[1000][1000];
 
@@ -58,7 +62,22 @@ public class starsPregled implements ActionListener {
 
         getGradesData(gmail);
         String vrste[] = { "ID", "Stevilka", "Opis", "Ucenec", "Predmet", "Ucitelj" };
-        booksTable = new JTable(dataArray, vrste);
+        DefaultTableModel tableModel = new DefaultTableModel(vrste, 0);
+
+        for (int i = 0; i < oceneAr.size(); i++) {
+            String idUcenca = oceneAr.get(i).get(0);
+            String imeUcenca = oceneAr.get(i).get(1);
+            String priimekUcenca = oceneAr.get(i).get(2);
+            String oceneUcenca = oceneAr.get(i).get(3);
+            String oceneUcenca1 = oceneAr.get(i).get(4);
+            String oceneUcenca2 = oceneAr.get(i).get(5);
+
+            String[] data = { idUcenca, imeUcenca, priimekUcenca, oceneUcenca, oceneUcenca1, oceneUcenca2 };
+
+            tableModel.addRow(data);
+        }
+
+        booksTable = new JTable(tableModel);
         booksTable.getTableHeader().setOpaque(false);
         booksTable.getTableHeader().setFont(new Font("Arial", Font.BOLD, 18));
         booksTable.getTableHeader().setBackground(new Color(51, 63, 76));
@@ -118,19 +137,14 @@ public class starsPregled implements ActionListener {
                 item = item.replace("}", "");
 
                 String[] chop = item.split(",");
-                String idOcene = chop[0];
-                String stevilkaOcene = chop[1];
-                String opisOcene = chop[2];
-                String ucenecIme = chop[3];
-                String predmet = chop[4];
-                String uciteljIme = chop[5];
-                dataArray[counter][0] = idOcene;
-                dataArray[counter][1] = stevilkaOcene;
-                dataArray[counter][2] = opisOcene;
-                dataArray[counter][3] = ucenecIme;
 
-                dataArray[counter][4] = predmet;
-                dataArray[counter][5] = uciteljIme;
+                oceneAr.add(new ArrayList<String>());
+                oceneAr.get(counter).add(0, chop[0]);
+                oceneAr.get(counter).add(1, chop[1]);
+                oceneAr.get(counter).add(2, chop[2]);
+                oceneAr.get(counter).add(3, chop[3]);
+                oceneAr.get(counter).add(4, chop[4]);
+                oceneAr.get(counter).add(5, chop[5]);
                 counter++;
             }
 

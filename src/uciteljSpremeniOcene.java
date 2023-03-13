@@ -10,6 +10,8 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.event.TableModelEvent;
+import javax.swing.table.DefaultTableModel;
 
 import java.awt.event.ActionListener;
 import java.io.Console;
@@ -47,8 +49,7 @@ public class uciteljSpremeniOcene implements ActionListener, ListSelectionListen
     Integer ide;
     Integer counter = 2;
 
-    ArrayList<String> arRazredi = new ArrayList<String>(); // Create an ArrayList object
-    ArrayList<String> arPredmeti = new ArrayList<String>(); // Create an ArrayList object
+    ArrayList<ArrayList<String>> oceneAr = new ArrayList<ArrayList<String>>();
 
     String[][] dataArray = new String[1000][1000];
 
@@ -103,11 +104,21 @@ public class uciteljSpremeniOcene implements ActionListener, ListSelectionListen
 
         getGradesData();
         String vrste[] = { "ID", "Ocena", "Opis" };
-        booksTable = new JTable(dataArray, vrste);
+        DefaultTableModel tableModel = new DefaultTableModel(vrste, 0);
+
+        for (int i = 0; i < oceneAr.size(); i++) {
+            String idUcenca = oceneAr.get(i).get(0);
+            String imeUcenca = oceneAr.get(i).get(1);
+            String priimekUcenca = oceneAr.get(i).get(2);
+
+            String[] data = { idUcenca, imeUcenca, priimekUcenca };
+
+            tableModel.addRow(data);
+        }
+        booksTable = new JTable(tableModel);
         booksTable.getTableHeader().setOpaque(false);
         booksTable.getTableHeader().setFont(new Font("Arial", Font.BOLD, 16));
         booksTable.getTableHeader().setBackground(new Color(77, 220, 180));
-        booksTable.getTableHeader().setBorder(BorderFactory.createLineBorder(new Color(20, 160, 185), 1));
         booksTable.setDefaultEditor(Object.class, null);
         booksTable.getColumnModel().getColumn(0).setPreferredWidth(1);
         booksTable.setFont(new Font("Arial", Font.PLAIN, 14));
@@ -122,7 +133,6 @@ public class uciteljSpremeniOcene implements ActionListener, ListSelectionListen
         gbc.fill = GridBagConstraints.HORIZONTAL;
         scrollPane = new JScrollPane(booksTable);
         scrollPane.setPreferredSize(new Dimension(600, 400));
-        scrollPane.setBorder(BorderFactory.createLineBorder(new Color(20, 160, 185), 2));
         scrollPane.setFont(new Font("Arial", Font.PLAIN, 14));
         scrollPane.setVisible(true);
         panel.add(scrollPane, gbc);
@@ -167,6 +177,10 @@ public class uciteljSpremeniOcene implements ActionListener, ListSelectionListen
                 dataArray[counter][0] = idOcene;
                 dataArray[counter][1] = stevilkaOcene;
                 dataArray[counter][2] = opisOcene;
+                oceneAr.add(new ArrayList<String>());
+                oceneAr.get(counter).add(0, chop[0]);
+                oceneAr.get(counter).add(1, chop[1]);
+                oceneAr.get(counter).add(2, chop[2]);
                 counter++;
             }
 
@@ -181,7 +195,7 @@ public class uciteljSpremeniOcene implements ActionListener, ListSelectionListen
     }
 
     public void Refresh() {
-        booksTable.repaint();
+        booksTable.tableChanged(null);
     }
 
     @Override
