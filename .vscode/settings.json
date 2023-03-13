@@ -1,7 +1,9 @@
 {
-    "java.project.sourcePaths": ["src"],
-    "java.project.outputPath": "bin",
-    "java.project.referencedLibraries": [
-        "lib/**/*.jar"
-    ]
+  "java.project.sourcePaths": ["src"],
+  "java.project.outputPath": "bin",
+  "java.project.referencedLibraries": [
+    "lib/**/*.jar",
+    "c:\\Program Files\\Java\\jdk-19\\lib\\postgresql-42.5.1.jar",
+    "f:\\minutni film\\postgresql-42.5.1.jar"
+  ]
 }
