@@ -99,7 +99,7 @@ public class dodajOceno implements ActionListener {
         frame = new JFrame();
         frame.setSize(285, 250);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        frame.setTitle("Prijava");
+        frame.setTitle("Dodaj oceno");
         panel.setBackground(new Color(33, 42, 53));
         panel.setLayout(new GridBagLayout());
         frame.add(panel);
