@@ -195,7 +195,7 @@ public class dodajOceno implements ActionListener {
             Spremeni();
 
             usc.getGradesData();
-            usc.Refresh();
+            usc.refreshTable();
             frame.dispose();
         }
     }

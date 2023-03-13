@@ -166,6 +166,7 @@ public class uciteljPregled implements ActionListener, ListSelectionListener {
                     + predmet.getSelectedItem().toString() + "')";
             ResultSet rs = select.executeQuery(sql);
             Integer counter = 0;
+            oceneAr.clear();
             while (rs.next()) {
                 String item = rs.getString(1);
                 item = item.replace("(", "");
@@ -265,14 +266,24 @@ public class uciteljPregled implements ActionListener, ListSelectionListener {
     }
 
     public void refreshTable() {
+        tableModel.setRowCount(0);
+        for (int i = 0; i < oceneAr.size(); i++) {
+            String idUcenca = oceneAr.get(i).get(0);
+            String imeUcenca = oceneAr.get(i).get(1);
+            String priimekUcenca = oceneAr.get(i).get(2);
+            String oceneUcenca = oceneAr.get(i).get(3);
 
+            String[] data = { idUcenca, imeUcenca, priimekUcenca, oceneUcenca };
+
+            tableModel.addRow(data);
+        }
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == razred || e.getSource() == predmet) {
             getGradesData(meil);
-            tableModel.fireTableDataChanged();
+            refreshTable();
         }
     }
 

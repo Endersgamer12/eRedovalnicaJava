@@ -233,17 +233,15 @@ public class spremeniOceno implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == spremeniButton) {
             Spremeni();
-            System.out.println(id);
-            System.out.println(ocena);
-            System.out.println(opis);
             usc.getGradesData();
-            usc.Refresh();
+            usc.refreshTable();
+            usc.counter = 3;
             frame.dispose();
         }
         if (e.getSource() == izbrisiButton) {
             Izbrisi();
             usc.getGradesData();
-            usc.Refresh();
+            usc.refreshTable();
             frame.dispose();
         }
     }

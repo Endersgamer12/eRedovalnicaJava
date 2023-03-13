@@ -47,11 +47,13 @@ public class uciteljSpremeniOcene implements ActionListener, ListSelectionListen
     String meil;
     String prdmt;
     Integer ide;
-    Integer counter = 2;
+    Integer counter = 3;
 
     ArrayList<ArrayList<String>> oceneAr = new ArrayList<ArrayList<String>>();
 
     String[][] dataArray = new String[1000][1000];
+
+    DefaultTableModel tableModel;
 
     JButton backButton;
     JButton newgradeButton;
@@ -104,7 +106,7 @@ public class uciteljSpremeniOcene implements ActionListener, ListSelectionListen
 
         getGradesData();
         String vrste[] = { "ID", "Ocena", "Opis" };
-        DefaultTableModel tableModel = new DefaultTableModel(vrste, 0);
+        tableModel = new DefaultTableModel(vrste, 0);
 
         for (int i = 0; i < oceneAr.size(); i++) {
             String idUcenca = oceneAr.get(i).get(0);
@@ -162,6 +164,7 @@ public class uciteljSpremeniOcene implements ActionListener, ListSelectionListen
             String sql = "SELECT uciteljPregledDijaka('" + meil + "', " + ide + ", '" + prdmt + "')";
             ResultSet rs = select.executeQuery(sql);
             Integer counter = 0;
+            oceneAr.clear();
             while (rs.next()) {
                 String item = rs.getString(1);
                 item = item.replace("(", "");
@@ -194,8 +197,17 @@ public class uciteljSpremeniOcene implements ActionListener, ListSelectionListen
         }
     }
 
-    public void Refresh() {
-        booksTable.tableChanged(null);
+    public void refreshTable() {
+        tableModel.setRowCount(0);
+        for (int i = 0; i < oceneAr.size(); i++) {
+            String idUcenca = oceneAr.get(i).get(0);
+            String imeUcenca = oceneAr.get(i).get(1);
+            String priimekUcenca = oceneAr.get(i).get(2);
+
+            String[] data = { idUcenca, imeUcenca, priimekUcenca };
+
+            tableModel.addRow(data);
+        }
     }
 
     @Override
@@ -210,17 +222,17 @@ public class uciteljSpremeniOcene implements ActionListener, ListSelectionListen
 
     @Override
     public void valueChanged(ListSelectionEvent e) {
-        if (counter % 2 == 0) {
+        if (counter % 3 == 0) {
+            counter++;
 
             int row = booksTable.getSelectedRow();
             Integer id = Integer.parseInt(booksTable.getModel().getValueAt(row, 0).toString());
             Integer ocena = Integer.parseInt(booksTable.getModel().getValueAt(row, 1).toString());
             String opis = booksTable.getModel().getValueAt(row, 2).toString();
-            System.out.println(id);
 
             spremeniOceno sOceno = new spremeniOceno(id, ocena, opis, this);
+            booksTable.clearSelection();
         }
-        counter++;
     }
 
 }
