@@ -22,10 +22,53 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
+import java.awt.Color;
+import java.awt.EventQueue;
+import java.awt.Font;
+import java.awt.GradientPaint;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.Shape;
+import java.awt.SystemColor;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.geom.RoundRectangle2D;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.border.AbstractBorder;
+import javax.swing.border.EmptyBorder;
+import javax.xml.parsers.ParserConfigurationException;
+
+import java.awt.*;
+import java.awt.geom.*;
+import javax.swing.*;
+import javax.swing.border.AbstractBorder;
+import java.awt.BorderLayout;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JScrollPane;
+
 public class LoginPage implements ActionListener {
 
     JPanel panel;
     JFrame frame;
+    JPanel panel2;
 
     JLabel emaillabel;
     JLabel passwordlabel;
@@ -33,7 +76,7 @@ public class LoginPage implements ActionListener {
     private static JTextField emailText;
     private static JTextField passwordText;
 
-    JButton loginButton;
+    RoundedJButton loginButton;
 
     GridBagConstraints gbc = new GridBagConstraints();
 
@@ -42,24 +85,28 @@ public class LoginPage implements ActionListener {
         // settanje up frama pa pannela
         panel = new JPanel();
         frame = new JFrame();
-        frame.setSize(350, 240);
+        frame.setSize(285, 250);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setTitle("Prijava");
-        panel.setBackground(new Color(76, 218, 240));
+        panel.setBackground(new Color(33, 42, 53));
         panel.setLayout(new GridBagLayout());
         frame.add(panel);
 
         // vsi objekti na framu
-        emaillabel = new JLabel("User");
-        emaillabel.setPreferredSize(new Dimension(50, 20));
+        panel2 = new JPanel();
+        panel2.setBackground(Color.BLUE);
+        emaillabel = new JLabel("User:");
+        emaillabel.setPreferredSize(new Dimension(70, 20));
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.gridwidth = 1;
-        gbc.insets = new Insets(0, 0, 10, 15);
+        gbc.insets = new Insets(0, 0, 20, 15);
+        emaillabel.setFont(new Font("Arial", Font.PLAIN, 15));
+        emaillabel.setForeground(new Color(255, 255, 255));
 
         panel.add(emaillabel, gbc);
 
-        emailText = new JTextField();
+        RoundedJTextField emailText = new RoundedJTextField(10);
         emailText.setPreferredSize(new Dimension(100, 20));
         gbc.gridx = 1;
         gbc.gridy = 0;
@@ -67,16 +114,18 @@ public class LoginPage implements ActionListener {
 
         panel.add(emailText, gbc);
 
-        passwordlabel = new JLabel("Password");
-        passwordlabel.setPreferredSize(new Dimension(50, 20));
+        passwordlabel = new JLabel("Password:");
+        passwordlabel.setPreferredSize(new Dimension(70, 20));
         gbc.gridx = 0;
         gbc.gridy = 1;
         gbc.gridwidth = 1;
-        gbc.insets = new Insets(0, 0, 10, 15);
+        gbc.insets = new Insets(0, 0, 30, 15);
+        passwordlabel.setFont(new Font("Arial", Font.PLAIN, 15));
+        passwordlabel.setForeground(new Color(255, 255, 255));
 
         panel.add(passwordlabel, gbc);
 
-        passwordText = new JPasswordField();
+        RoundedJTextField passwordText = new RoundedJTextField(10);
         passwordText.setPreferredSize(new Dimension(100, 20));
         gbc.gridx = 1;
         gbc.gridy = 1;
@@ -84,14 +133,17 @@ public class LoginPage implements ActionListener {
 
         panel.add(passwordText, gbc);
 
-        loginButton = new JButton("Login");
+        loginButton = new RoundedJButton("Login");
+        loginButton.setPreferredSize(new Dimension(70, 30));
         loginButton.addActionListener(this);
-        loginButton.setBounds(100, 100, 120, 25);
-        loginButton.setBackground(new Color(77, 152, 218));
+        loginButton.setBorder(null);
+        loginButton.setBackground(new Color(41, 53, 66));
+        loginButton.setForeground(new Color(255, 255, 255));
 
         gbc.gridx = 0;
         gbc.gridy = 2;
         gbc.gridwidth = 2;
+        gbc.insets = new Insets(0, 0, 20, 15);
 
         panel.add(loginButton, gbc);
 
