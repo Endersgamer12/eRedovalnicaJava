@@ -68,7 +68,7 @@ public class uciteljPregled implements ActionListener, ListSelectionListener {
         frame = new JFrame();
         frame.setSize(1000, 600);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        panel.setBackground(new Color(76, 218, 240));
+        panel.setBackground(new Color(33, 42, 53));
         frame.setTitle("Ucitelj");
 
         dobiRazrede(gmail);
@@ -99,13 +99,15 @@ public class uciteljPregled implements ActionListener, ListSelectionListener {
         String vrste[] = { "ID", "Ime", "Priimek", "Ocene" };
         booksTable = new JTable(dataArray, vrste);
         booksTable.getTableHeader().setOpaque(false);
-        booksTable.getTableHeader().setFont(new Font("Arial", Font.BOLD, 16));
-        booksTable.getTableHeader().setBackground(new Color(77, 220, 180));
-        booksTable.getTableHeader().setBorder(BorderFactory.createLineBorder(new Color(20, 160, 185), 1));
+        booksTable.getTableHeader().setFont(new Font("Arial", Font.BOLD, 18));
+        booksTable.getTableHeader().setForeground(new Color(255, 255, 255));
+        booksTable.getTableHeader().setBackground(new Color(51, 63, 76));
+        booksTable.getTableHeader().setBorder(BorderFactory.createLineBorder(new Color(255, 255, 255), 1));
         booksTable.setDefaultEditor(Object.class, null);
         booksTable.getColumnModel().getColumn(0).setPreferredWidth(1);
         booksTable.setFont(new Font("Arial", Font.PLAIN, 14));
-        booksTable.setBackground(new Color(77, 218, 180));
+        booksTable.setBackground(new Color(51, 63, 76));
+        booksTable.setForeground(new Color(255, 255, 255));
         booksTable.setBorder(BorderFactory.createEmptyBorder());
         booksTable.getSelectionModel().addListSelectionListener(this);
 
@@ -116,8 +118,9 @@ public class uciteljPregled implements ActionListener, ListSelectionListener {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         scrollPane = new JScrollPane(booksTable);
         scrollPane.setPreferredSize(new Dimension(600, 400));
-        scrollPane.setBorder(BorderFactory.createLineBorder(new Color(20, 160, 185), 2));
+        scrollPane.setBorder(BorderFactory.createLineBorder(new Color(255, 255, 255), 2));
         scrollPane.setFont(new Font("Arial", Font.PLAIN, 14));
+        scrollPane.setForeground(new Color(255, 255, 255));
         scrollPane.setVisible(true);
         panel.add(scrollPane, gbc);
 
