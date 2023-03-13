@@ -75,11 +75,11 @@ public class uciteljSpremeniOcene implements ActionListener, ListSelectionListen
         frame = new JFrame();
         frame.setSize(1000, 600);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        panel.setBackground(new Color(76, 218, 240));
+        panel.setBackground(new Color(33, 42, 53));
         frame.setTitle("Ucitelj");
 
         backButton = new RoundedJButton("Nazaj");
-        backButton.setPreferredSize(new Dimension(70, 30));
+        backButton.setPreferredSize(new Dimension(90, 40));
         backButton.addActionListener(this);
         backButton.setBorder(null);
         backButton.setBackground(new Color(41, 53, 66));
@@ -88,11 +88,12 @@ public class uciteljSpremeniOcene implements ActionListener, ListSelectionListen
         gbc.gridx = 4;
         gbc.gridy = 2;
         gbc.gridwidth = 1;
+        gbc.insets = new Insets(15, 450, 0, 0);
 
         panel.add(backButton, gbc);
 
         newgradeButton = new RoundedJButton("Nova ocena");
-        newgradeButton.setPreferredSize(new Dimension(70, 30));
+        newgradeButton.setPreferredSize(new Dimension(90, 40));
         newgradeButton.addActionListener(this);
         newgradeButton.setBorder(null);
         newgradeButton.setBackground(new Color(41, 53, 66));
@@ -101,6 +102,7 @@ public class uciteljSpremeniOcene implements ActionListener, ListSelectionListen
         gbc.gridx = 3;
         gbc.gridy = 2;
         gbc.gridwidth = 1;
+        gbc.insets = new Insets(15, 0, 0, 0);
 
         panel.add(newgradeButton, gbc);
 
@@ -120,11 +122,13 @@ public class uciteljSpremeniOcene implements ActionListener, ListSelectionListen
         booksTable = new JTable(tableModel);
         booksTable.getTableHeader().setOpaque(false);
         booksTable.getTableHeader().setFont(new Font("Arial", Font.BOLD, 16));
-        booksTable.getTableHeader().setBackground(new Color(77, 220, 180));
+        booksTable.getTableHeader().setBackground(new Color(41, 53, 66));
+        booksTable.getTableHeader().setForeground(new Color(255, 255, 255));
         booksTable.setDefaultEditor(Object.class, null);
         booksTable.getColumnModel().getColumn(0).setPreferredWidth(1);
         booksTable.setFont(new Font("Arial", Font.PLAIN, 14));
-        booksTable.setBackground(new Color(77, 218, 180));
+        booksTable.setForeground(new Color(255, 255, 255));
+        booksTable.setBackground(new Color(41, 53, 66));
         booksTable.setBorder(BorderFactory.createEmptyBorder());
         booksTable.getSelectionModel().addListSelectionListener(this);
 
@@ -137,6 +141,7 @@ public class uciteljSpremeniOcene implements ActionListener, ListSelectionListen
         scrollPane.setPreferredSize(new Dimension(600, 400));
         scrollPane.setFont(new Font("Arial", Font.PLAIN, 14));
         scrollPane.setVisible(true);
+        scrollPane.getViewport().setBackground(new Color(41, 53, 66));
         panel.add(scrollPane, gbc);
 
         frame.add(panel);
