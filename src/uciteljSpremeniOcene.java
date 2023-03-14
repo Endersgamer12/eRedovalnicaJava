@@ -8,10 +8,14 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TableModelEvent;
+import javax.swing.plaf.basic.BasicScrollBarUI;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 
 import java.awt.event.ActionListener;
 import java.io.Console;
@@ -44,10 +48,15 @@ public class uciteljSpremeniOcene implements ActionListener, ListSelectionListen
     JPanel panel;
     JFrame frame;
 
+    JLabel logoLabel;
+    JLabel imeLabel;
+
     String meil;
     String prdmt;
     Integer ide;
     Integer counter = 3;
+    String dime;
+    String dpriimek;
 
     ArrayList<ArrayList<String>> oceneAr = new ArrayList<ArrayList<String>>();
 
@@ -63,11 +72,13 @@ public class uciteljSpremeniOcene implements ActionListener, ListSelectionListen
 
     GridBagConstraints gbc = new GridBagConstraints();
 
-    public uciteljSpremeniOcene(String gmail, Integer id, String predmet) {
+    public uciteljSpremeniOcene(String gmail, Integer id, String predmet, String dimee, String dpriimekk) {
 
         meil = gmail;
         ide = id;
         prdmt = predmet;
+        dime = dimee;
+        dpriimek = dpriimekk;
 
         panel = new JPanel();
         panel.setLayout(new GridBagLayout());
@@ -75,34 +86,8 @@ public class uciteljSpremeniOcene implements ActionListener, ListSelectionListen
         frame = new JFrame();
         frame.setSize(1000, 600);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        panel.setBackground(new Color(76, 218, 240));
+        panel.setBackground(new Color(33, 42, 53));
         frame.setTitle("Ucitelj");
-
-        backButton = new RoundedJButton("Nazaj");
-        backButton.setPreferredSize(new Dimension(70, 30));
-        backButton.addActionListener(this);
-        backButton.setBorder(null);
-        backButton.setBackground(new Color(41, 53, 66));
-        backButton.setForeground(new Color(255, 255, 255));
-
-        gbc.gridx = 4;
-        gbc.gridy = 2;
-        gbc.gridwidth = 1;
-
-        panel.add(backButton, gbc);
-
-        newgradeButton = new RoundedJButton("Nova ocena");
-        newgradeButton.setPreferredSize(new Dimension(70, 30));
-        newgradeButton.addActionListener(this);
-        newgradeButton.setBorder(null);
-        newgradeButton.setBackground(new Color(41, 53, 66));
-        newgradeButton.setForeground(new Color(255, 255, 255));
-
-        gbc.gridx = 3;
-        gbc.gridy = 2;
-        gbc.gridwidth = 1;
-
-        panel.add(newgradeButton, gbc);
 
         getGradesData();
         String vrste[] = { "ID", "Ocena", "Opis" };
@@ -118,26 +103,95 @@ public class uciteljSpremeniOcene implements ActionListener, ListSelectionListen
             tableModel.addRow(data);
         }
         booksTable = new JTable(tableModel);
-        booksTable.getTableHeader().setOpaque(false);
-        booksTable.getTableHeader().setFont(new Font("Arial", Font.BOLD, 16));
-        booksTable.getTableHeader().setBackground(new Color(77, 220, 180));
-        booksTable.setDefaultEditor(Object.class, null);
-        booksTable.getColumnModel().getColumn(0).setPreferredWidth(1);
-        booksTable.setFont(new Font("Arial", Font.PLAIN, 14));
-        booksTable.setBackground(new Color(77, 218, 180));
-        booksTable.setBorder(BorderFactory.createEmptyBorder());
+        booksTable.setBackground(new Color(48, 56, 71));
+        booksTable.setForeground(new Color(255, 255, 255));
+        booksTable.setFont(new Font("Arial", Font.PLAIN, 15));
+        booksTable.setShowVerticalLines(false);
+        // booksTable.getColumnModel().setColumnMargin(20);
+        booksTable.getTableHeader().setFont(new Font("Arial", Font.ITALIC, 16));
+        booksTable.getTableHeader().setBackground(new Color(48, 56, 71));
+        booksTable.getTableHeader().setForeground(new Color(255, 255, 255));
+        booksTable.setRowHeight(30);
         booksTable.getSelectionModel().addListSelectionListener(this);
 
-        gbc.gridx = 0;
-        gbc.gridy = 1;
-        gbc.gridwidth = 5;
+        TableColumn col0 = booksTable.getColumnModel().getColumn(0);
+        TableColumn col1 = booksTable.getColumnModel().getColumn(1);
+        TableColumn col2 = booksTable.getColumnModel().getColumn(2);
+        DefaultTableCellRenderer dtcr = new DefaultTableCellRenderer();
+        dtcr.setHorizontalAlignment(SwingConstants.CENTER);
+        col0.setCellRenderer(dtcr);
+        col1.setCellRenderer(dtcr);
+        col2.setCellRenderer(dtcr);
 
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        gbc.gridwidth = 2;
+        gbc.anchor = GridBagConstraints.CENTER;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         scrollPane = new JScrollPane(booksTable);
-        scrollPane.setPreferredSize(new Dimension(600, 400));
-        scrollPane.setFont(new Font("Arial", Font.PLAIN, 14));
+        scrollPane.setPreferredSize(new Dimension(800, 400));
+        scrollPane.getViewport().setBackground(new Color(33, 42, 53));
+        scrollPane.setBorder(BorderFactory.createEmptyBorder());
+        scrollPane.getVerticalScrollBar().setUI(new BasicScrollBarUI() {
+            @Override
+            protected void configureScrollBarColors() {
+                this.thumbColor = new Color(33, 42, 53);
+            }
+        });
+        scrollPane.getVerticalScrollBar().setBackground(new Color(50, 59, 70));
+        scrollPane.setBackground(new Color(48, 56, 71));
         scrollPane.setVisible(true);
+
         panel.add(scrollPane, gbc);
+
+        logoLabel = new JLabel("eRedovalnica");
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.anchor = GridBagConstraints.CENTER;
+        gbc.gridwidth = 1;
+        gbc.insets = new Insets(0, 0, 10, 0);
+        logoLabel.setFont(new Font("Arial", Font.BOLD, 15));
+        logoLabel.setForeground(new Color(255, 255, 255));
+        panel.add(logoLabel, gbc);
+
+        imeLabel = new JLabel("Dijak: " + dime + " " + dpriimek);
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.anchor = GridBagConstraints.CENTER;
+        gbc.gridwidth = 1;
+        gbc.insets = new Insets(0, 0, 10, 0);
+        imeLabel.setFont(new Font("Arial", Font.BOLD, 12));
+        imeLabel.setForeground(new Color(200, 200, 200));
+        panel.add(imeLabel, gbc);
+
+        newgradeButton = new RoundedJButton("Nova ocena");
+        newgradeButton.setPreferredSize(new Dimension(170, 40));
+        newgradeButton.addActionListener(this);
+        newgradeButton.setBorder(null);
+        newgradeButton.setBackground(new Color(41, 53, 66));
+        newgradeButton.setForeground(new Color(255, 255, 255));
+
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        gbc.gridwidth = 1;
+        gbc.anchor = GridBagConstraints.CENTER;
+        gbc.insets = new Insets(15, 0, 0, 0);
+
+        panel.add(newgradeButton, gbc);
+
+        backButton = new RoundedJButton("Nazaj");
+        backButton.setPreferredSize(new Dimension(90, 40));
+        backButton.addActionListener(this);
+        backButton.setBorder(null);
+        backButton.setBackground(new Color(41, 53, 66));
+        backButton.setForeground(new Color(255, 255, 255));
+
+        gbc.gridx = 1;
+        gbc.gridy = 3;
+        gbc.gridwidth = 1;
+        gbc.anchor = GridBagConstraints.EAST;
+        gbc.insets = new Insets(15, 450, 0, 0);
+        panel.add(backButton, gbc);
 
         frame.add(panel);
         frame.setLocationRelativeTo(null);
@@ -146,7 +200,7 @@ public class uciteljSpremeniOcene implements ActionListener, ListSelectionListen
 
     public static void main(String[] args) throws Exception {
 
-        new uciteljSpremeniOcene("vlasta.leban@scv.si", 3, "Anglescina");
+        new uciteljSpremeniOcene("vlasta.leban@scv.si", 3, "Anglescina", "Anej", "Cverle");
     }
 
     public void getGradesData() {

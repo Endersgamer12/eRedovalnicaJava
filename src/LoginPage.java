@@ -148,7 +148,7 @@ public class LoginPage implements ActionListener {
 
         panel.add(panel2, gbc);
 
-        logoLabel = new JLabel("eRed");
+        logoLabel = new JLabel("eRedovalnica");
         gbc.gridx = 1;
         gbc.gridy = 0;
         gbc.anchor = GridBagConstraints.WEST;

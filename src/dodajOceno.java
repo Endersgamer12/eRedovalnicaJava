@@ -97,34 +97,38 @@ public class dodajOceno implements ActionListener {
         // settanje up frama pa pannela
         panel = new JPanel();
         frame = new JFrame();
-        frame.setSize(285, 250);
+        frame.setSize(500, 340);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        frame.setTitle("Prijava");
+        frame.setTitle("Dodaj oceno");
         panel.setBackground(new Color(33, 42, 53));
         panel.setLayout(new GridBagLayout());
         frame.add(panel);
 
         // vsi objekti na framu
         panel2 = new JPanel();
-        panel2.setBackground(Color.BLUE);
+        panel2.setLayout(new GridBagLayout());
+        panel2.setBackground(new Color(48, 56, 71));
+        panel2.setPreferredSize(new Dimension(350, 150));
+
         ocenalabel = new JLabel("Ocena:");
         ocenalabel.setPreferredSize(new Dimension(100, 30));
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.gridwidth = 1;
         gbc.insets = new Insets(0, 0, 20, 15);
+
         ocenalabel.setFont(new Font("Arial", Font.PLAIN, 15));
         ocenalabel.setForeground(new Color(255, 255, 255));
 
-        panel.add(ocenalabel, gbc);
+        panel2.add(ocenalabel, gbc);
 
-        ocenaText = new RoundedJTextField(10);
+        ocenaText = new RoundedJTextField(15);
         ocenaText.setPreferredSize(new Dimension(100, 30));
         gbc.gridx = 1;
         gbc.gridy = 0;
         gbc.gridwidth = 1;
 
-        panel.add(ocenaText, gbc);
+        panel2.add(ocenaText, gbc);
 
         opislabel = new JLabel("Opis:");
         opislabel.setPreferredSize(new Dimension(100, 30));
@@ -132,21 +136,23 @@ public class dodajOceno implements ActionListener {
         gbc.gridy = 1;
         gbc.gridwidth = 1;
         gbc.insets = new Insets(0, 0, 30, 15);
+
         opislabel.setFont(new Font("Arial", Font.PLAIN, 15));
         opislabel.setForeground(new Color(255, 255, 255));
 
-        panel.add(opislabel, gbc);
+        panel2.add(opislabel, gbc);
 
-        opisText = new RoundedJTextField(10);
+        opisText = new RoundedJTextField(15);
         opisText.setPreferredSize(new Dimension(100, 30));
         gbc.gridx = 1;
         gbc.gridy = 1;
         gbc.gridwidth = 1;
 
-        panel.add(opisText, gbc);
+        panel2.add(opisText, gbc);
+        panel.add(panel2, gbc);
 
         spremeniButton = new RoundedJButton("Dodaj");
-        spremeniButton.setPreferredSize(new Dimension(70, 30));
+        spremeniButton.setPreferredSize(new Dimension(100, 40));
         spremeniButton.addActionListener(this);
         spremeniButton.setBorder(null);
         spremeniButton.setBackground(new Color(41, 53, 66));
@@ -155,7 +161,6 @@ public class dodajOceno implements ActionListener {
         gbc.gridx = 0;
         gbc.gridy = 2;
         gbc.gridwidth = 2;
-        gbc.insets = new Insets(0, 0, 20, 15);
 
         panel.add(spremeniButton, gbc);
 
@@ -196,6 +201,8 @@ public class dodajOceno implements ActionListener {
 
             usc.getGradesData();
             usc.refreshTable();
+            usc.counter = 3;
+
             frame.dispose();
         }
     }
