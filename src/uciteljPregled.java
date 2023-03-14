@@ -17,9 +17,11 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
 import java.io.Console;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -42,6 +44,7 @@ import java.applet.Applet;
 import org.postgresql.core.BaseConnection;
 import org.postgresql.copy.CopyManager;
 import java.util.ArrayList; // import the ArrayList class
+import static java.lang.Integer.parseInt;
 
 public class uciteljPregled implements ActionListener, ListSelectionListener {
 
@@ -60,6 +63,9 @@ public class uciteljPregled implements ActionListener, ListSelectionListener {
 
     JComboBox razred;
     JComboBox predmet;
+
+    JButton uvoziOceneButton;
+    JButton uvoziPredmeteButton;
 
     JButton odjavaButton;
 
@@ -185,6 +191,36 @@ public class uciteljPregled implements ActionListener, ListSelectionListener {
         gbc.insets = new Insets(15, 5, 5, 5);
 
         panel.add(odjavaButton, gbc);
+
+        uvoziOceneButton = new RoundedJButton("Uvozi ocene");
+        uvoziOceneButton.setPreferredSize(new Dimension(100, 30));
+        uvoziOceneButton.addActionListener(this);
+        uvoziOceneButton.setBorder(null);
+        uvoziOceneButton.setBackground(new Color(41, 53, 66));
+        uvoziOceneButton.setForeground(new Color(255, 255, 255));
+
+        gbc.gridx = 1;
+        gbc.gridy = 3;
+        gbc.gridwidth = 1;
+        gbc.anchor = GridBagConstraints.CENTER;
+        gbc.insets = new Insets(15, 5, 5, 5);
+
+        panel.add(uvoziOceneButton, gbc);
+
+        uvoziPredmeteButton = new RoundedJButton("Uvozi predmete");
+        uvoziPredmeteButton.setPreferredSize(new Dimension(100, 30));
+        uvoziPredmeteButton.addActionListener(this);
+        uvoziPredmeteButton.setBorder(null);
+        uvoziPredmeteButton.setBackground(new Color(41, 53, 66));
+        uvoziPredmeteButton.setForeground(new Color(255, 255, 255));
+
+        gbc.gridx = 2;
+        gbc.gridy = 3;
+        gbc.gridwidth = 1;
+        gbc.anchor = GridBagConstraints.CENTER;
+        gbc.insets = new Insets(15, 5, 5, 5);
+
+        panel.add(uvoziPredmeteButton, gbc);
 
         logoLabel = new JLabel("eRedovalnica");
         gbc.gridx = 0;
@@ -335,6 +371,114 @@ public class uciteljPregled implements ActionListener, ListSelectionListener {
         }
     }
 
+    public void UvoziOcene() {
+        String filepath = "C:\\Users\\nikkr\\Desktop\\ocene.csv";
+
+        int batchSize = 20;
+
+        Connection c = null;
+
+        try {
+            Class.forName("org.postgresql.Driver");
+            c = DriverManager
+                    .getConnection(
+                            "jdbc:postgresql://trumpet.db.elephantsql.com:5432/vnkkwcle",
+                            "vnkkwcle", "Ha3l6m0s1K4y8Uax3R_AmfynSejagg8H");
+
+            String sql = "INSERT INTO ocene(stevilka, opis, ucenec_id, predmet_id, ucitelj_id) VALUES(?,?,?,?,?)";
+            PreparedStatement statement = c.prepareStatement(sql);
+
+            BufferedReader lineReader = new BufferedReader(new FileReader(filepath));
+
+            String lineText = null;
+            int count = 0;
+
+            lineReader.readLine();
+            while ((lineText = lineReader.readLine()) != null) {
+                String[] data = lineText.split(",");
+                String stevilka = data[0];
+                String opis = data[1];
+                String ucenec_id = data[2];
+                String predmet_id = data[3];
+                String ucitelj_id = data[4];
+
+                statement.setInt(1, parseInt(stevilka));
+                statement.setString(2, opis);
+                statement.setInt(3, parseInt(ucenec_id));
+                statement.setInt(4, parseInt(predmet_id));
+                statement.setInt(5, parseInt(ucitelj_id));
+                statement.addBatch();
+                if (count % batchSize == 0) {
+                    statement.executeBatch();
+                }
+            }
+            lineReader.close();
+            statement.executeBatch();
+            c.close();
+            System.out.println("Succenss!");
+
+        } catch (Exception e1) {
+            e1.printStackTrace();
+        } finally {
+            try {
+                c.close();
+            } catch (Exception e) {
+                /* Ignored */ }
+        }
+
+    }
+
+    public void UvoziPredmete() {
+        String filepath = "C:\\Users\\nikkr\\Desktop\\predmeti.csv";
+
+        int batchSize = 20;
+
+        Connection c = null;
+
+        try {
+            Class.forName("org.postgresql.Driver");
+            c = DriverManager
+                    .getConnection(
+                            "jdbc:postgresql://trumpet.db.elephantsql.com:5432/vnkkwcle",
+                            "vnkkwcle", "Ha3l6m0s1K4y8Uax3R_AmfynSejagg8H");
+
+            String sql = "INSERT INTO predmeti(ime, povprecne_ocene) VALUES(?,?)";
+            PreparedStatement statement = c.prepareStatement(sql);
+
+            BufferedReader lineReader = new BufferedReader(new FileReader(filepath));
+
+            String lineText = null;
+            int count = 0;
+
+            lineReader.readLine();
+            while ((lineText = lineReader.readLine()) != null) {
+                String[] data = lineText.split(",");
+                String ime = data[0];
+                String povp = data[1];
+
+                statement.setString(1, ime);
+                statement.setInt(2, parseInt(povp));
+                statement.addBatch();
+                if (count % batchSize == 0) {
+                    statement.executeBatch();
+                }
+            }
+            lineReader.close();
+            statement.executeBatch();
+            c.close();
+            System.out.println("Succenss!");
+
+        } catch (Exception e1) {
+            e1.printStackTrace();
+        } finally {
+            try {
+                c.close();
+            } catch (Exception e) {
+                /* Ignored */ }
+        }
+
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == razred || e.getSource() == predmet) {
@@ -349,6 +493,16 @@ public class uciteljPregled implements ActionListener, ListSelectionListener {
                 e1.printStackTrace();
             }
             frame.dispose();
+        }
+        if (e.getSource() == uvoziOceneButton) {
+            UvoziOcene();
+            getGradesData(meil);
+            refreshTable();
+        }
+        if (e.getSource() == uvoziPredmeteButton) {
+            UvoziPredmete();
+            getGradesData(meil);
+            refreshTable();
         }
     }
 
