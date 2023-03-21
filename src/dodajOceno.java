@@ -1,17 +1,14 @@
-import javax.swing.AbstractAction;
-import javax.swing.JButton;
+
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.GridBagConstraints;
 
 import java.awt.event.ActionListener;
-import java.io.Console;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -115,6 +112,8 @@ public class dodajOceno implements ActionListener {
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.gridwidth = 1;
+        gbc.weightx = 1.0;
+        gbc.weighty = 1.0;
         gbc.insets = new Insets(0, 0, 20, 15);
 
         ocenalabel.setFont(new Font("Arial", Font.PLAIN, 15));
@@ -147,6 +146,7 @@ public class dodajOceno implements ActionListener {
         gbc.gridx = 1;
         gbc.gridy = 1;
         gbc.gridwidth = 1;
+        gbc.insets = new Insets(0, 0, 0, 0);
 
         panel2.add(opisText, gbc);
         panel.add(panel2, gbc);

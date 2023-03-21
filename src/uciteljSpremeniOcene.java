@@ -126,6 +126,9 @@ public class uciteljSpremeniOcene implements ActionListener, ListSelectionListen
         gbc.gridx = 0;
         gbc.gridy = 2;
         gbc.gridwidth = 2;
+        gbc.weightx = 0.7;
+        gbc.weighty = 0.7;
+        gbc.insets = new Insets(0, 10, 0, 10);
         gbc.anchor = GridBagConstraints.CENTER;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         scrollPane = new JScrollPane(booksTable);
@@ -141,6 +144,7 @@ public class uciteljSpremeniOcene implements ActionListener, ListSelectionListen
         scrollPane.getVerticalScrollBar().setBackground(new Color(50, 59, 70));
         scrollPane.setBackground(new Color(48, 56, 71));
         scrollPane.setVisible(true);
+        scrollPane.setMinimumSize(new Dimension(400, 400));
 
         panel.add(scrollPane, gbc);
 
@@ -149,7 +153,7 @@ public class uciteljSpremeniOcene implements ActionListener, ListSelectionListen
         gbc.gridy = 0;
         gbc.anchor = GridBagConstraints.CENTER;
         gbc.gridwidth = 1;
-        gbc.insets = new Insets(0, 0, 10, 0);
+        gbc.insets = new Insets(20, 10, 10, 0);
         logoLabel.setFont(new Font("Arial", Font.BOLD, 15));
         logoLabel.setForeground(new Color(255, 255, 255));
         panel.add(logoLabel, gbc);
@@ -159,7 +163,7 @@ public class uciteljSpremeniOcene implements ActionListener, ListSelectionListen
         gbc.gridy = 1;
         gbc.anchor = GridBagConstraints.CENTER;
         gbc.gridwidth = 1;
-        gbc.insets = new Insets(0, 0, 10, 0);
+        gbc.insets = new Insets(0, 10, 10, 0);
         imeLabel.setFont(new Font("Arial", Font.BOLD, 12));
         imeLabel.setForeground(new Color(200, 200, 200));
         panel.add(imeLabel, gbc);
@@ -175,7 +179,7 @@ public class uciteljSpremeniOcene implements ActionListener, ListSelectionListen
         gbc.gridy = 3;
         gbc.gridwidth = 1;
         gbc.anchor = GridBagConstraints.CENTER;
-        gbc.insets = new Insets(15, 0, 0, 0);
+        gbc.insets = new Insets(15, 10, 10, 0);
 
         panel.add(newgradeButton, gbc);
 
@@ -190,7 +194,7 @@ public class uciteljSpremeniOcene implements ActionListener, ListSelectionListen
         gbc.gridy = 3;
         gbc.gridwidth = 1;
         gbc.anchor = GridBagConstraints.EAST;
-        gbc.insets = new Insets(15, 450, 0, 0);
+        gbc.insets = new Insets(15, 440, 0, 10);
         panel.add(backButton, gbc);
 
         frame.add(panel);
@@ -267,7 +271,12 @@ public class uciteljSpremeniOcene implements ActionListener, ListSelectionListen
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == backButton) {
-            uciteljPregled uPregled = new uciteljPregled(meil);
+            try {
+                uciteljPregled uPregled = new uciteljPregled(meil);
+            } catch (IOException e1) {
+                // TODO Auto-generated catch block
+                e1.printStackTrace();
+            }
             frame.dispose();
         } else if (e.getSource() == newgradeButton) {
             dodajOceno dOceno = new dodajOceno(ide, prdmt, meil, this);

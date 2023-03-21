@@ -155,6 +155,7 @@ public class spremeniOceno implements ActionListener {
         gbc.gridx = 1;
         gbc.gridy = 1;
         gbc.gridwidth = 1;
+        gbc.insets = new Insets(0, 0, 0, 0);
 
         panel2.add(opisText, gbc);
 
@@ -170,7 +171,7 @@ public class spremeniOceno implements ActionListener {
         gbc.gridx = 0;
         gbc.gridy = 2;
         gbc.gridwidth = 2;
-        gbc.insets = new Insets(0, 0, 20, 15);
+        gbc.insets = new Insets(10, 0, 20, 0);
 
         panel.add(spremeniButton, gbc);
 
@@ -184,7 +185,7 @@ public class spremeniOceno implements ActionListener {
         gbc.gridx = 0;
         gbc.gridy = 3;
         gbc.gridwidth = 2;
-        gbc.insets = new Insets(0, 0, 20, 15);
+        gbc.insets = new Insets(0, 0, 10, 0);
 
         panel.add(izbrisiButton, gbc);
 
