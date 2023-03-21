@@ -114,6 +114,9 @@ public class starsPregled implements ActionListener {
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.gridwidth = 5;
+        gbc.weightx = 1.0;
+        gbc.weighty = 1.0;
+        gbc.insets = new Insets(10, 20, 5, 20);
 
         gbc.fill = GridBagConstraints.HORIZONTAL;
         scrollPane = new JScrollPane(booksTable);
@@ -129,11 +132,12 @@ public class starsPregled implements ActionListener {
         scrollPane.getVerticalScrollBar().setBackground(new Color(50, 59, 70));
         scrollPane.setBackground(new Color(48, 56, 71));
         scrollPane.setVisible(true);
+        scrollPane.setMinimumSize(new Dimension(400, 400));
 
         panel.add(scrollPane, gbc);
 
         odjavaButton = new RoundedJButton("Odjava");
-        odjavaButton.setPreferredSize(new Dimension(100, 30));
+        odjavaButton.setPreferredSize(new Dimension(150, 30));
         odjavaButton.addActionListener(this);
         odjavaButton.setBorder(null);
         odjavaButton.setBackground(new Color(41, 53, 66));
@@ -142,8 +146,9 @@ public class starsPregled implements ActionListener {
         gbc.gridx = 0;
         gbc.gridy = 1;
         gbc.gridwidth = 1;
+        gbc.weightx = 0;
         gbc.anchor = GridBagConstraints.CENTER;
-        gbc.insets = new Insets(15, 5, 5, 5);
+        gbc.insets = new Insets(15, 20, 5, 0);
 
         panel.add(odjavaButton, gbc);
 

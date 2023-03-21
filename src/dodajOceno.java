@@ -126,6 +126,7 @@ public class dodajOceno implements ActionListener {
         gbc.gridx = 1;
         gbc.gridy = 0;
         gbc.gridwidth = 1;
+        gbc.insets = new Insets(0, 0, 0, 0);
 
         panel2.add(ocenaText, gbc);
 
@@ -134,7 +135,7 @@ public class dodajOceno implements ActionListener {
         gbc.gridx = 0;
         gbc.gridy = 1;
         gbc.gridwidth = 1;
-        gbc.insets = new Insets(0, 0, 30, 15);
+        gbc.insets = new Insets(0, 0, 20, 15);
 
         opislabel.setFont(new Font("Arial", Font.PLAIN, 15));
         opislabel.setForeground(new Color(255, 255, 255));
